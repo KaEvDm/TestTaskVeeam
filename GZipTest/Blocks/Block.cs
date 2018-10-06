@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace GZipTest.Blocks
+namespace GZipTest
 {
     //считаный блок
     public sealed class Block : BaseBlock

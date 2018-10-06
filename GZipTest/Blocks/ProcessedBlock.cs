@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GZipTest.Blocks
+namespace GZipTest
 {
     //обработанный блок
     public sealed class ProcessedBlock : BaseBlock
