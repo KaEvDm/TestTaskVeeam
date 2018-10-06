@@ -6,7 +6,7 @@ namespace GZipTest
 {
     public static class TestFileManager
     {
-        private static readonly string path = @"C:\Users\evGenius\source\repos\TestTaskVeeam\GZipTest\TestFiles\";
+        public static readonly string path = @"C:\Users\evGenius\source\repos\TestTaskVeeam\GZipTest\TestFiles\";
 
         public static void CreateFile(int size, int clusteringLevel, string fileName)
         {
@@ -53,6 +53,8 @@ namespace GZipTest
 
             var sourceFileSize = (new FileInfo(pathToSourceFile)).Length;
             var targetFileSize = (new FileInfo(pathToTargetFile)).Length;
+            Console.WriteLine($"sourceFileSize = {sourceFileSize}");
+            Console.WriteLine($"targetFileSize = {targetFileSize}");
 
             if (sourceFileSize == targetFileSize)
             {
