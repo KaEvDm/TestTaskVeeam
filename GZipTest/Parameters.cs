@@ -8,6 +8,7 @@ namespace GZipTest
 {
     public static class Parameters
     {
+        public const int Megabyte = 1024 * 1024;
         public static ProcessMode Mode;
         public static string PathToSourceFile;
         public static string PathToResultFile;
@@ -78,15 +79,15 @@ namespace GZipTest
             switch (Mode)
             {
                 case ProcessMode.compress:
-                    {
-                        Process = Compressor.CompressBlock;
-                        break;
-                    }
+                {
+                    Process = Compressor.CompressBlock;
+                    break;
+                }
                 case ProcessMode.decompress:
-                    {
-                        Process = Compressor.DecompressBlock;
-                        break;
-                    }
+                {
+                    Process = Compressor.DecompressBlock;
+                    break;
+                }
             }
         }
     }

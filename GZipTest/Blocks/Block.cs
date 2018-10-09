@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace GZipTest
 {
-    //считаный блок
     public sealed class Block : BaseBlock
     {
         private static int ExistBlockCount = 0;

@@ -43,8 +43,9 @@
     <Compile Include="Blocks\BaseBlock.cs" />
     <Compile Include="Blocks\Block.cs" />
     <Compile Include="Blocks\ProcessedBlock.cs" />
-    <Compile Include="Blocks\QueueBlocks.cs" />
+    <Compile Include="Blocks\SortedQueueBlocks.cs" />
     <Compile Include="Compressor.cs" />
+    <Compile Include="MultiThreading.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ProcessMode.cs" />
     <Compile Include="Program.cs" />
