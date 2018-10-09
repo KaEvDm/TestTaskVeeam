@@ -79,10 +79,12 @@ namespace GZipTest
             {
                 case ProcessMode.compress:
                     {
+                        Process = Compressor.CompressBlock;
                         break;
                     }
                 case ProcessMode.decompress:
                     {
+                        Process = Compressor.DecompressBlock;
                         break;
                     }
             }
