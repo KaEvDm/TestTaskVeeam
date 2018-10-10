@@ -17,11 +17,12 @@ namespace GZipTest
         public static void Parse(string[] args)
         {
             if (args.Count() != 3)
+            {
                 throw new ArgumentException("Некорректное количество параметров!");
+            }
 
             ModeCheckDialog(args[0]);
             Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
-
             ProcessСhoice();
 
             PathCheck(args[1]);
@@ -31,10 +32,14 @@ namespace GZipTest
             PathToResultFile = args[2];
 
             if (!File.Exists(PathToSourceFile))
+            {
                 throw new ArgumentException($"{PathToSourceFile} - файл не существует!");
+            }
 
             if (File.Exists(PathToResultFile))
+            {
                 RewriteFileDialog(PathToResultFile);
+            }  
         }
 
         private static void ModeCheckDialog(string mode)

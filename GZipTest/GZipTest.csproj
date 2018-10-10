@@ -45,6 +45,7 @@
     <Compile Include="Blocks\ProcessedBlock.cs" />
     <Compile Include="Blocks\SortedQueueBlocks.cs" />
     <Compile Include="Compressor.cs" />
+    <Compile Include="GZipTools.cs" />
     <Compile Include="MultiThreading.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ProcessMode.cs" />
