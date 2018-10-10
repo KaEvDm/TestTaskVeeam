@@ -7,27 +7,36 @@ using System.Threading;
 
 namespace GZipTest
 {
-    class MultiThreading
+    public static class MultiThreading
     {
+        private static List<Thread> threads = new List<Thread>();
         static SortedQueueBlocks<Block> queueBlocks = new SortedQueueBlocks<Block>();
         static SortedQueueBlocks<ProcessedBlock> queueProcessedBlocks = new SortedQueueBlocks<ProcessedBlock>();
-
-        private static List<Thread> threads = new List<Thread>();
+        private static int totalBlockRead = 0;
+        private static int totalBlockProcessed = 0;
+        private static int totalBlockWrite = 0;
 
         public static void Run(int threadCount)
         {
-            var threadRead = new Thread(() => ReadingBlocksIntoFile(Parameters.PathToSourceFile));
+            var threadRead = new Thread(() => ReadingBlocksIntoFile(Parameters.PathToSourceFile))
+            {
+                Name = "Read Thread"
+            };
             threadRead.Start();
 
             for (int i = 0; i < threadCount - 2; i++)
             {
-                var thread = new Thread(ProcessingBlocks);
+                var thread = new Thread(ProcessingBlocks)
+                {
+                    Name = "Process Thread" + i.ToString()
+                };
                 threads.Add(thread);
             }
 
             foreach (var t in threads)
                 t.Start();
 
+            Thread.CurrentThread.Name = "Write Thread";
             // В основном потоке
             WritingBlocksToFile(Parameters.PathToResultFile);
         }
@@ -47,6 +56,8 @@ namespace GZipTest
                     var block = new Block(sourceStream);
                     queueBlocks.Enqueue(block);
 
+                    totalBlockRead++;
+
                     Console.BackgroundColor = ConsoleColor.Blue;
                     Console.WriteLine($"блок {block.Number} cчитан");
                     Console.BackgroundColor = ConsoleColor.Black;
@@ -61,16 +72,21 @@ namespace GZipTest
 
         private static void ProcessingBlocks()
         {
-            while (queueBlocks.CanDequeue)
+            while (queueBlocks.CanDequeue || totalBlockRead != totalBlockProcessed)
             {
                 Block block = (Block)queueBlocks.Dequeue();
 
-                queueProcessedBlocks.Enqueue(Parameters.Process(block));
-#if DEBUG
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.WriteLine($"блок {block.Number} обработан");
-                Console.BackgroundColor = ConsoleColor.Black;
-#endif
+                if(!(block is null))
+                {
+
+                    queueProcessedBlocks.Enqueue(Parameters.Process(block));
+
+                    totalBlockProcessed++;
+
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"блок {block.Number} обработан");
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
             }
             queueProcessedBlocks.Stop();
         }
@@ -79,16 +95,19 @@ namespace GZipTest
         {
             using (var resutStream = new FileStream(pathToResultFile, FileMode.OpenOrCreate))
             {
-                while (queueProcessedBlocks.CanDequeue)
+                while (queueProcessedBlocks.CanDequeue || totalBlockProcessed != totalBlockWrite)
                 {
                     ProcessedBlock block = (ProcessedBlock)queueProcessedBlocks.Dequeue();
 
-                    resutStream.Write(block.Data, 0, block.Size);
-#if DEBUG
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"блок {block.Number} записан");
-                    Console.BackgroundColor = ConsoleColor.Black;
-#endif
+                    if(!(block is null))
+                    {
+                        resutStream.Write(block.Data, 0, block.Size);
+                        totalBlockWrite++;
+
+                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"блок {block.Number} записан");
+                        Console.BackgroundColor = ConsoleColor.Black;
+                    }
                 }
             }
             queueProcessedBlocks.Stop();

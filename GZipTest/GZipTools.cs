@@ -33,7 +33,8 @@ namespace GZipTest
 
         public static byte[] AddSizeInfo(byte[] data)
         {
-            var resultData = new byte[data.Length + sizeInfoLength];
+            var a = data.Length + sizeInfoLength;
+            var resultData = new byte[a];
             var size = BitConverter.GetBytes(data.Length);
 
             size.CopyTo(resultData, 0);

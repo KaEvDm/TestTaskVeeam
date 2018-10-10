@@ -13,6 +13,7 @@ namespace GZipTest
         private bool IsDead = false; 
 
         Queue<T> blocks = new Queue<T>();
+        private int currentBlockNumber = 0;
 
         public int Count { get => blocks.Count; }
         public bool IsEmpty { get => Count == 0; }
@@ -21,18 +22,23 @@ namespace GZipTest
 
         public void Enqueue(T block)
         {
-            if (!(block is T))
+            if (block is null)
+            {
                 throw new ArgumentNullException("В очередь попал пустой блок.");
-
+            }
             if (!CanEnqueue)
+            {
                 throw new InvalidOperationException("Очередь остановлена. В неё нельзя добавлять блоки.");
+            }
 
             lock (mutex)
             {
-                while(block.Number != blocks.Peek().Number + 1)
-                    Monitor.Wait(mutex);
+                //Sort
+                while (block.Number != currentBlockNumber)
+                    Monitor.Wait(mutex, 1);
 
                 blocks.Enqueue(block);
+                currentBlockNumber++;
 
                 Monitor.Pulse(mutex);
             }
@@ -44,12 +50,12 @@ namespace GZipTest
             {
                 //пока очередь пустая, но в неё можно добавлять элементы
                 while (IsEmpty && CanEnqueue)
-                    Monitor.Wait(mutex);
+                    Monitor.Wait(mutex, 1);
 
                 if (!CanDequeue)
-                    throw new InvalidOperationException("Очередь остановлена и пуста." +
-                        "Из неё нельзя извлекать блоки.");
-
+                {
+                    return null;
+                }
                 return blocks.Dequeue();
             }
         }

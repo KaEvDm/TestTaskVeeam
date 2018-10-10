@@ -10,9 +10,9 @@ namespace GZipTest
         {
             ProcessedBlock compressedBlock;
             using (var compressedDataStream = new MemoryStream())
-            using (var GZipStream = new GZipStream(compressedDataStream, CompressionMode.Compress))
             {
-                GZipStream.Write(block.Data, 0, block.Size);
+                using (var GZipStream = new GZipStream(compressedDataStream, CompressionMode.Compress))
+                    GZipStream.Write(block.Data, 0, block.Size);
 
                 compressedBlock = new ProcessedBlock(compressedDataStream.ToArray(), block.Number);
             }

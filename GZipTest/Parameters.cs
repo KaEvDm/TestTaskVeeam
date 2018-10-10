@@ -27,7 +27,6 @@ namespace GZipTest
 
             PathCheck(args[1]);
             PathCheck(args[2]);
-
             PathToSourceFile = args[1];
             PathToResultFile = args[2];
 
@@ -35,7 +34,6 @@ namespace GZipTest
             {
                 throw new ArgumentException($"{PathToSourceFile} - файл не существует!");
             }
-
             if (File.Exists(PathToResultFile))
             {
                 RewriteFileDialog(PathToResultFile);

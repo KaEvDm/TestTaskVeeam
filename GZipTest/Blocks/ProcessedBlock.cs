@@ -18,12 +18,12 @@
                 {
                     case ProcessMode.compress:
                     {
-                        Data = GZipTools.AddSizeInfo(value);
+                        base.Data = GZipTools.AddSizeInfo(value);
                         break;
                     }
                     case ProcessMode.decompress:
                     {
-                        Data = value;
+                        base.Data = value;
                         break;
                     }
                 }
