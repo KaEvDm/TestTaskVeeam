@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
 
 namespace GZipTest
@@ -8,14 +7,18 @@ namespace GZipTest
     {
         public static readonly string path = @"C:\Users\evGenius\source\repos\TestTaskVeeam\GZipTest\TestFiles\";
 
-        public static void CreateFile(int size, int clusteringLevel, string fileName)
+        public static void CreateFile(long size, int clusteringLevel, string fileName, bool nameWithPath)
         {
-            using (var stream = new FileStream(path + fileName, FileMode.CreateNew))
+            string fullPath;
+            if (nameWithPath) fullPath = fileName;
+            else fullPath = path + fileName;
+
+            using (var stream = new FileStream(fullPath, FileMode.CreateNew))
             {
                 var rnd = new Random();
                 var buffer = new byte[clusteringLevel];
 
-                for (int i = 0; i < size / (clusteringLevel * 2); i++)
+                for (long i = 0; i < size / (clusteringLevel * 2); i++)
                 {
                     rnd.NextBytes(buffer);
                     for (int j = 0; j < clusteringLevel; j++)

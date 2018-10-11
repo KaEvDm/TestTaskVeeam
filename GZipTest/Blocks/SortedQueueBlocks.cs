@@ -8,11 +8,9 @@ namespace GZipTest
 {
     public class SortedQueueBlocks<T> where T : BaseBlock
     {
-        readonly object mutex = new object();
-
-        private bool IsDead = false; 
-
-        Queue<T> blocks = new Queue<T>();
+        private readonly object mutex = new object();
+        private bool IsDead = false;
+        private Queue<T> blocks = new Queue<T>();
         private int currentBlockNumber = 0;
 
         public int Count { get => blocks.Count; }

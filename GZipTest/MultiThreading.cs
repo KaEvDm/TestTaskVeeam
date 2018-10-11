@@ -10,33 +10,26 @@ namespace GZipTest
     public static class MultiThreading
     {
         private static List<Thread> threads = new List<Thread>();
-        static SortedQueueBlocks<Block> queueBlocks = new SortedQueueBlocks<Block>();
-        static SortedQueueBlocks<ProcessedBlock> queueProcessedBlocks = new SortedQueueBlocks<ProcessedBlock>();
+        private static SortedQueueBlocks<Block> queueBlocks = new SortedQueueBlocks<Block>();
+        private static SortedQueueBlocks<ProcessedBlock> queueProcessedBlocks = new SortedQueueBlocks<ProcessedBlock>();
         private static int totalBlockRead = 0;
         private static int totalBlockProcessed = 0;
         private static int totalBlockWrite = 0;
 
         public static void Run(int threadCount)
         {
-            var threadRead = new Thread(() => ReadingBlocksIntoFile(Parameters.PathToSourceFile))
-            {
-                Name = "Read Thread"
-            };
+            var threadRead = new Thread(() => ReadingBlocksIntoFile(Parameters.PathToSourceFile));
             threadRead.Start();
 
             for (int i = 0; i < threadCount - 2; i++)
             {
-                var thread = new Thread(ProcessingBlocks)
-                {
-                    Name = "Process Thread" + i.ToString()
-                };
+                var thread = new Thread(ProcessingBlocks);
                 threads.Add(thread);
             }
 
             foreach (var t in threads)
                 t.Start();
 
-            Thread.CurrentThread.Name = "Write Thread";
             // В основном потоке
             WritingBlocksToFile(Parameters.PathToResultFile);
         }
@@ -58,9 +51,9 @@ namespace GZipTest
 
                     totalBlockRead++;
 
-                    Console.BackgroundColor = ConsoleColor.Blue;
-                    Console.WriteLine($"блок {block.Number} cчитан");
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    //Console.BackgroundColor = ConsoleColor.Blue;
+                    //Console.WriteLine($"блок {block.Number} cчитан");
+                    //Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             queueBlocks.Stop();
@@ -83,9 +76,9 @@ namespace GZipTest
 
                     totalBlockProcessed++;
 
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"блок {block.Number} обработан");
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    //Console.BackgroundColor = ConsoleColor.Red;
+                    //Console.WriteLine($"блок {block.Number} обработан");
+                    //Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             queueProcessedBlocks.Stop();
@@ -104,9 +97,9 @@ namespace GZipTest
                         resutStream.Write(block.Data, 0, block.Size);
                         totalBlockWrite++;
 
-                        Console.BackgroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"блок {block.Number} записан");
-                        Console.BackgroundColor = ConsoleColor.Black;
+                        //Console.BackgroundColor = ConsoleColor.Green;
+                        //Console.WriteLine($"блок {block.Number} записан");
+                        //Console.BackgroundColor = ConsoleColor.Black;
                     }
                 }
             }

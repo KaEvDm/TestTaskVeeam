@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+
 
 namespace GZipTest
 {
@@ -14,21 +12,27 @@ namespace GZipTest
         public static bool IsGZipStream(Stream stream)
         {
             var temp = stream.Position;
-            stream.Position += sizeInfoLength;
+            //stream.Position += sizeInfoLength;
 
             var header = new byte[GZipDefaultHeader.Length];
             stream.Read(header, 0, header.Length);
 
             stream.Position = temp;
 
-            if (header == GZipDefaultHeader)
+            for (int i = 0; i < header.Length; i++)
             {
-                return true;
+                if (header[i] != GZipDefaultHeader[i])
+                    return false;
             }
-            else
-            {
-                return false;
-            }
+            return true;
+            //if (header.Equals(GZipDefaultHeader))
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
         public static byte[] AddSizeInfo(byte[] data)
@@ -39,7 +43,7 @@ namespace GZipTest
             size.CopyTo(resultData, 0);
             data.CopyTo(resultData, sizeInfoLength);
 
-            return data;
+            return resultData;
         }
 
         public static int GetSizeInfo(Stream stream)

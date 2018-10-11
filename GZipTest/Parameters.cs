@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GZipTest
 {
@@ -77,7 +75,7 @@ namespace GZipTest
                 throw new ArgumentException($"{path} - неверный файл.");
         }
 
-        private static void ProcessСhoice()
+        public static void ProcessСhoice()
         {
             switch (Mode)
             {
