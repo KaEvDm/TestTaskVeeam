@@ -31,7 +31,7 @@ namespace GZipTest
 
             lock (mutex)
             {
-                //Sort
+                //Сортировка
                 while (block.Number != currentBlockNumber)
                     Monitor.Wait(mutex, 1);
 
@@ -42,7 +42,7 @@ namespace GZipTest
             }
         }
 
-        public BaseBlock Dequeue()
+        public T Dequeue()
         {
             lock (mutex)
             {

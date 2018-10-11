@@ -10,8 +10,15 @@ namespace GZipTest
         public static void CreateFile(long size, int clusteringLevel, string fileName, bool nameWithPath)
         {
             string fullPath;
-            if (nameWithPath) fullPath = fileName;
-            else fullPath = path + fileName;
+            if (nameWithPath)
+            {
+                fullPath = fileName;
+            }
+            else
+            {
+                fullPath = path + fileName;
+            }
+
 
             using (var stream = new FileStream(fullPath, FileMode.CreateNew))
             {
@@ -49,10 +56,21 @@ namespace GZipTest
             }
         }
 
-        public static bool Compare(string sourceFileNeme, string targetFileName)
+        public static bool Compare(string sourceFileNeme, string targetFileName, bool nameWithPath)
         {
-            var pathToSourceFile = path + sourceFileNeme;
-            var pathToTargetFile = path + targetFileName;
+            string pathToSourceFile;
+            string pathToTargetFile;
+            if (nameWithPath)
+            {
+                pathToSourceFile = sourceFileNeme;
+                pathToTargetFile = targetFileName;
+            }
+            else
+            {
+                pathToSourceFile = path + sourceFileNeme;
+                pathToTargetFile = path + targetFileName;
+            }
+
 
             var sourceFileSize = (new FileInfo(pathToSourceFile)).Length;
             var targetFileSize = (new FileInfo(pathToTargetFile)).Length;
@@ -61,10 +79,10 @@ namespace GZipTest
 
             if (sourceFileSize == targetFileSize)
             {
-                using (var sourceStream = new FileStream(path + sourceFileNeme, FileMode.Open))
-                using (var targetStream = new FileStream(path + targetFileName, FileMode.Open))
+                using (var sourceStream = new FileStream(pathToSourceFile, FileMode.Open))
+                using (var targetStream = new FileStream(pathToTargetFile, FileMode.Open))
                 {
-                    if(sourceStream.ReadByte() != targetStream.ReadByte())
+                    if (sourceStream.ReadByte() != targetStream.ReadByte())
                     {
                         return false;
                     }

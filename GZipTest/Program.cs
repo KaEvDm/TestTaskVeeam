@@ -26,59 +26,39 @@ namespace GZipTest
             var TestComp4 = TestFileManager.path + "Test-Clastering_4-Size_10000-zip.gz";
             var TestDecomp4 = TestFileManager.path + "Test-Clastering_4-Size_10000-unzip.txt";
 
-            //TestFileManager.CreateFile(500 * Parameters.Megabyte, 8, TestFile2, true);
-            //Console.WriteLine("2 Успешно");
-            //TestFileManager.CreateFile(1000 * Parameters.Megabyte, 2, TestFile3, true);
-            //Console.WriteLine("3 Успешно");
-            //long size = 5000;
-            //long BigSize = size * Parameters.Megabyte;
-            //TestFileManager.CreateFile(BigSize, 4, TestFile4, true);
-            //Console.WriteLine("4 Успешно");
 
 
+            Parameters.Parse(args);
+            new Program().Run();
 
-            //Parameters.Parse(args);
-            Parameters.Mode = ProcessMode.compress;
-            Parameters.ProcessСhoice();
-
-            //new Program().Run(TestFile1, TestComp1);
-            //Console.WriteLine("1 Успешно");
-            new Program().Run(TestFile2, TestComp2);
-            Console.WriteLine("2 Успешно");
-            //new Program().Run(TestFile3, TestComp3);
-            //Console.WriteLine("3 Успешно");
-            //new Program().Run(TestFile4, TestComp4);
-            //Console.WriteLine("4 Успешно");
+            Console.WriteLine(TestFileManager.Compare(TestFile2, TestDecomp2, true));
+            Console.ReadKey();
         }
 
-        void Run(string sourceFile, string resultFile)
+        void Run()
         {
-            Parameters.PathToSourceFile = sourceFile;
-            Parameters.PathToResultFile = resultFile;
-
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            var fileSize = (new FileInfo(sourceFile)).Length;
+            var fileSize = (new FileInfo(Parameters.PathToSourceFile)).Length;
+            int processors = Environment.ProcessorCount;
 
             Console.WriteLine("Ждите!");
 
-            if (fileSize < Parameters.Megabyte && Parameters.Mode == ProcessMode.compress)
+            if (fileSize < 2 * processors * Parameters.Megabyte)
             {
-                Compressor.CompressFileToFile(sourceFile, resultFile);
+                MultiThreading.Run(1);
+                MultiThreading.Stop();
             }
             else
             {
-                int processors = Environment.ProcessorCount;
-                MultiThreading.Run(processors * 2);
-
+                MultiThreading.Run(2 * processors);
                 MultiThreading.Stop();
             }
 
             Console.WriteLine("Успешно!");
 
             stopWatch.Stop();
-
             TimeSpan ts = stopWatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds,
