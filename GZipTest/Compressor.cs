@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
 
-
 namespace GZipTest
 {
     public static class Compressor
@@ -16,7 +15,6 @@ namespace GZipTest
 
                 compressedBlock = new ProcessedBlock(compressedDataStream.ToArray(), block.Number);
             }
-
             return compressedBlock;
         }
 
@@ -30,7 +28,6 @@ namespace GZipTest
                 GZipStream.CopyTo(decompressedDataStream);
                 decompressedBlock = new ProcessedBlock(decompressedDataStream.ToArray(), block.Number);
             }
-
             return decompressedBlock;
         }
     }

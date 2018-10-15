@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace GZipTest
@@ -50,15 +47,11 @@ namespace GZipTest
                     queueBlocks.Enqueue(block);
 
                     totalBlockRead++;
-
-                    //Console.BackgroundColor = ConsoleColor.Blue;
-                    //Console.WriteLine($"блок {block.Number} cчитан");
-                    //Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             queueBlocks.Stop();
 
-            // После окончания чтения поток переключается на обработку
+            // После окончания чтения, поток переключается на обработку
             threads.Add(Thread.CurrentThread);
             ProcessingBlocks();
         }
@@ -71,14 +64,8 @@ namespace GZipTest
 
                 if(!(block is null))
                 {
-
                     queueProcessedBlocks.Enqueue(Parameters.Process(block));
-
                     totalBlockProcessed++;
-
-                    //Console.BackgroundColor = ConsoleColor.Red;
-                    //Console.WriteLine($"блок {block.Number} обработан");
-                    //Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             queueProcessedBlocks.Stop();
@@ -96,10 +83,6 @@ namespace GZipTest
                     {
                         resutStream.Write(block.Data, 0, block.Size);
                         totalBlockWrite++;
-
-                        //Console.BackgroundColor = ConsoleColor.Green;
-                        //Console.WriteLine($"блок {block.Number} записан");
-                        //Console.BackgroundColor = ConsoleColor.Black;
                     }
                 }
             }

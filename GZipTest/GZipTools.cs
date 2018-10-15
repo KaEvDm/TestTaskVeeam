@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-
 namespace GZipTest
 {
     public static class GZipTools
@@ -25,14 +24,6 @@ namespace GZipTest
                     return false;
             }
             return true;
-            //if (header.Equals(GZipDefaultHeader))
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
 
         public static byte[] AddSizeInfo(byte[] data)
@@ -48,7 +39,7 @@ namespace GZipTest
 
         public static int GetSizeInfo(Stream stream)
         {
-            if (!GZipTools.IsGZipStream(stream))
+            if (!IsGZipStream(stream))
             {
                 throw new ArgumentException("Неправильный заголовок GZip. " +
                     "Возможно, исходный файл не сжат или сжат при помощи другой программы.");

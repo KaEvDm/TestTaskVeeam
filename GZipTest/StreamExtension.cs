@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-
 namespace GZipTest
 {
     public static class StreamExtension
