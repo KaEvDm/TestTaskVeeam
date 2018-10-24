@@ -4,15 +4,51 @@ using System.Linq;
 
 namespace GZipTest
 {
-    public static class Parameters
+    public class Parameters
     {
         public const int Megabyte = 1024 * 1024;
-        public static ProcessMode Mode;
-        public static string PathToSourceFile;
-        public static string PathToResultFile;
-        public static Func<Block, ProcessedBlock> Process;
+        public ProcessMode Mode { get; private set; }
+        public bool IsNeedMultithreading;
+        public string PathToSourceFile { get; private set; }
+        public string PathToResultFile { get; private set; }
+        public long SourceFileSize;
+        public int ProcessorCount;
+        public ProgressBar progressBar;
+        public IHandler handler;
 
-        public static void Parse(string[] args)
+        public Parameters(string[] args, bool enableProgressMenu = false)
+        {
+            Parse(args);
+            SourceFileSize = new FileInfo(PathToSourceFile).Length;
+            ProcessorCount = Environment.ProcessorCount;
+
+            if (ProcessorCount == 1 || SourceFileSize < 2 * ProcessorCount * Megabyte)
+            {
+                IsNeedMultithreading = false;
+            }
+            else
+            {
+                IsNeedMultithreading = true;
+            }
+
+            if (enableProgressMenu)
+            {
+                progressBar = new ProgressBar(SourceFileSize);
+            }
+
+            handler = HandlerSelection();
+        }
+
+        private void Parse(string[] args)
+        {
+            Validation(args);
+
+            Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
+            PathToSourceFile = args[1];
+            PathToResultFile = args[2];
+        }
+
+        private static void Validation(string[] args)
         {
             if (args.Count() != 3)
             {
@@ -20,23 +56,19 @@ namespace GZipTest
             }
 
             ModeCheckDialog(args[0]);
-            Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
-            ProcessСhoice();
-
             PathCheck(args[1]);
             PathCheck(args[2]);
-            PathToSourceFile = args[1];
-            PathToResultFile = args[2];
 
-            if (!File.Exists(PathToSourceFile))
+            if (!File.Exists(args[1]))
             {
-                throw new ArgumentException($"{PathToSourceFile} - файл не существует!");
+                throw new ArgumentException($"{args[1]} - файл не существует!");
             }
-            if (File.Exists(PathToResultFile))
+            if (File.Exists(args[2]))
             {
-                RewriteFileDialog(PathToResultFile);
-            }  
+                RewriteFileDialog(args[2]);
+            }
         }
+
 
         private static void ModeCheckDialog(string mode)
         {
@@ -75,19 +107,22 @@ namespace GZipTest
                 throw new ArgumentException($"{path} - неверный файл.");
         }
 
-        public static void ProcessСhoice()
+        public IHandler HandlerSelection()
         {
+            var factory = new ArchiverFactory();
             switch (Mode)
             {
                 case ProcessMode.compress:
                 {
-                    Process = Compressor.CompressBlock;
-                    break;
+                    return factory.CreateHandler();
                 }
                 case ProcessMode.decompress:
                 {
-                    Process = Compressor.DecompressBlock;
-                    break;
+                    return factory.CreateDehandler();
+                }
+                default:
+                {
+                    throw new Exception("Неверный режим работы!");
                 }
             }
         }

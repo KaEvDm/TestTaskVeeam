@@ -40,18 +40,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\BaseBlock.cs" />
-    <Compile Include="Blocks\Block.cs" />
-    <Compile Include="Blocks\ProcessedBlock.cs" />
-    <Compile Include="Blocks\SortedQueueBlocks.cs" />
-    <Compile Include="Compressor.cs" />
-    <Compile Include="GZipTools.cs" />
-    <Compile Include="MultiThreading.cs" />
-    <Compile Include="Parameters.cs" />
-    <Compile Include="ProcessMode.cs" />
+    <Compile Include="Application\Application.cs" />
+    <Compile Include="Modeles\Block.cs" />
+    <Compile Include="Handlers\HandlersFactory\GZipHandlerFactory.cs" />
+    <Compile Include="Handlers\HandlersFactory\HandlersFactory.cs" />
+    <Compile Include="Application\ProgressBar.cs" />
+    <Compile Include="Modeles\SortedQueueBlocks.cs" />
+    <Compile Include="Handlers\FileHandlers\FileHandler.cs" />
+    <Compile Include="Utilites\GZipTools.cs" />
+    <Compile Include="Handlers\FileHandlers\Compressor.cs" />
+    <Compile Include="Handlers\FileHandlers\Decompressor.cs" />
+    <Compile Include="Handlers\FileHandlers\FileReader.cs" />
+    <Compile Include="Handlers\FileHandlers\FileWriter.cs" />
+    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Handlers\IProcessor.cs" />
+    <Compile Include="Handlers\IReader.cs" />
+    <Compile Include="Application\MultiThreading.cs" />
+    <Compile Include="Application\Parameters.cs" />
+    <Compile Include="Application\ProcessMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamExtension.cs" />
+    <Compile Include="Utilites\StreamExtension.cs" />
+    <Compile Include="Handlers\IWriter.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

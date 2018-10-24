@@ -6,7 +6,7 @@ namespace GZipTest
     public static class GZipTools
     {
         private static readonly byte[] GZipDefaultHeader = { 0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00 };
-        private static readonly int sizeInfoLength = 4;
+        private const int sizeInfoLength = 4;
 
         public static bool IsGZipStream(Stream stream)
         {
@@ -39,15 +39,18 @@ namespace GZipTest
 
         public static int GetSizeInfo(Stream stream)
         {
-            if (!IsGZipStream(stream))
+            if (IsGZipStream(stream))
             {
-                throw new ArgumentException("Неправильный заголовок GZip. " +
-                    "Возможно, исходный файл не сжат или сжат при помощи другой программы.");
+                var sizeInfo = new byte[sizeInfoLength];
+                stream.Read(sizeInfo, 0, sizeInfo.Length);
+                return BitConverter.ToInt32(sizeInfo, 0);
+            }
+            else
+            {
+                return (int)Math.Min(Parameters.Megabyte, stream.Length - stream.Position);
             }
 
-            var sizeInfo = new byte[sizeInfoLength];
-            stream.Read(sizeInfo, 0, sizeInfo.Length);
-            return BitConverter.ToInt32(sizeInfo, 0);
+            
         }
     }
 }
