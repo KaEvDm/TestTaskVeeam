@@ -7,18 +7,22 @@ namespace GZipTest
     public class Parameters
     {
         public const int Megabyte = 1024 * 1024;
-        public ProcessMode Mode { get; private set; }
-        public bool IsNeedMultithreading;
-        public string PathToSourceFile { get; private set; }
-        public string PathToResultFile { get; private set; }
-        public long SourceFileSize;
-        public int ProcessorCount;
-        public ProgressBar progressBar;
-        public IHandler handler;
+        public readonly ProcessMode Mode;
+        public readonly bool IsNeedMultithreading;
+        public readonly string PathToSourceFile;
+        public readonly string PathToResultFile;
+        public readonly long SourceFileSize;
+        public readonly int ProcessorCount;
+        public readonly IHandler Handler;
 
-        public Parameters(string[] args, bool enableProgressMenu = false)
+        public Parameters(string[] args)
         {
-            Parse(args);
+            Validation(args);
+
+            Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
+            PathToSourceFile = args[1];
+            PathToResultFile = args[2];
+
             SourceFileSize = new FileInfo(PathToSourceFile).Length;
             ProcessorCount = Environment.ProcessorCount;
 
@@ -31,21 +35,7 @@ namespace GZipTest
                 IsNeedMultithreading = true;
             }
 
-            if (enableProgressMenu)
-            {
-                progressBar = new ProgressBar(SourceFileSize);
-            }
-
-            handler = HandlerSelection();
-        }
-
-        private void Parse(string[] args)
-        {
-            Validation(args);
-
-            Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
-            PathToSourceFile = args[1];
-            PathToResultFile = args[2];
+            Handler = HandlerSelection();
         }
 
         private static void Validation(string[] args)

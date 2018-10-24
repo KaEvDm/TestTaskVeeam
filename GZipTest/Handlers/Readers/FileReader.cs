@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace GZipTest
 {
@@ -18,7 +14,7 @@ namespace GZipTest
             TotalBlockRead = 0;
         }
 
-        bool IReader.Read(out Block block)
+        bool IReader.TryRead(out Block block)
         {
             if(sourceStream.Length > sourceStream.Position)
             {

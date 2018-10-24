@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace GZipTest
 {
@@ -17,7 +13,7 @@ namespace GZipTest
             TotalBlockWrite = 0;
         }
 
-        bool IWriter.Write(Block processedBlock)
+        bool IWriter.TryWrite(Block processedBlock)
         {
             resultStream.Write(processedBlock.Data, 0, processedBlock.Size);
             TotalBlockWrite++;

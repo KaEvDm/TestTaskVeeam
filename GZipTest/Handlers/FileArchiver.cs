@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace GZipTest
 {
-    public class FileHandler : IHandler
+    public class FileArchiver : IHandler
     {
         private SortedQueueBlocks queueForProcessing;
         private SortedQueueBlocks queueForWriting;
@@ -14,11 +11,7 @@ namespace GZipTest
         private readonly IProcessor processor;
         private readonly IWriter writer;
 
-        private ProgressBar readProgressBar;
-        private ProgressBar processProgressBar;
-        private ProgressBar writeProgressBar;
-
-        public FileHandler(IReader reader, IProcessor processor, IWriter writer)
+        public FileArchiver(IReader reader, IProcessor processor, IWriter writer)
         {
             queueForProcessing = new SortedQueueBlocks();
             queueForWriting = new SortedQueueBlocks();
@@ -26,23 +19,13 @@ namespace GZipTest
             this.reader = reader;
             this.processor = processor;
             this.writer = writer;
-
-            readProgressBar = new ProgressBar("Reading", ConsoleColor.DarkRed);
-            readProgressBar.Run();
-
-            processProgressBar = new ProgressBar("Processing", ConsoleColor.DarkYellow);
-            processProgressBar.Run();
-
-            writeProgressBar = new ProgressBar("Writing", ConsoleColor.DarkGreen);
-            writeProgressBar.Run();
         }
 
         void IHandler.Reading()
         {
-            while (reader.Read(out Block block))
+            while (reader.TryRead(out Block block))
             {
                 queueForProcessing.Enqueue(block);
-                readProgressBar.Update(reader.TotalBlockRead);
             }
             queueForProcessing.Stop();
         }
@@ -55,12 +38,11 @@ namespace GZipTest
 
                 if (!(block is null))
                 {
-                    if (processor.Process(block, out Block processedBlock))
+                    if (processor.TryProcess(block, out Block processedBlock))
                     {
                         queueForWriting.Enqueue(processedBlock);
                     }
                 }
-                processProgressBar.Update(processor.TotalBlockProcessed);
             }
             queueForWriting.Stop();
         }
@@ -73,9 +55,8 @@ namespace GZipTest
 
                 if (!(processedBlock is null))
                 {
-                    writer.Write(processedBlock);
+                    writer.TryWrite(processedBlock);
                 }
-                writeProgressBar.Update(writer.TotalBlockWrite);
             }
 
             if(writer.TotalBlockWrite != reader.TotalBlockRead)

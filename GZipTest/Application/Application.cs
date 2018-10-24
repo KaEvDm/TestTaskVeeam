@@ -4,28 +4,28 @@ namespace GZipTest
 {
     public class Application
     {
-        public Parameters parameters { get; }
+        public Parameters Parameters { get; }
 
         public Application(Parameters parameters)
         {
-            this.parameters = parameters;
+            Parameters = parameters;
         }
 
         public void Run()
         {
             Console.WriteLine("Ждите.");
 
-            if (parameters.IsNeedMultithreading)
+            if (Parameters.IsNeedMultithreading)
             {
-                var multithreading = new MultiThreading(parameters.handler);
-                multithreading.Run(parameters.ProcessorCount * 2);
+                var multithreading = new MultiThreading(Parameters.Handler);
+                multithreading.Run(Parameters.ProcessorCount * 2);
                 multithreading.Stop();
             }
             else
             {
-                parameters.handler.Reading();
-                parameters.handler.Processing();
-                parameters.handler.Writing();
+                Parameters.Handler.Reading();
+                Parameters.Handler.Processing();
+                Parameters.Handler.Writing();
             }
 
             Console.WriteLine("Успешно!");

@@ -7,7 +7,7 @@ namespace GZipTest
     public class MultiThreading
     {
         private List<Thread> threads = new List<Thread>();
-        private readonly object sync = new object();
+        private readonly object mutex = new object();
         private IHandler handler;
 
         public MultiThreading(IHandler handler)
@@ -27,7 +27,9 @@ namespace GZipTest
             }
 
             foreach (var t in threads)
+            {
                 t.Start();
+            }
 
             // В основном потоке
             handler.Writing();
@@ -36,7 +38,9 @@ namespace GZipTest
         public void Stop()
         {
             foreach (var t in threads)
+            {
                 t.Join();
+            }
             handler.Dispose();
         }
 
@@ -54,14 +58,9 @@ namespace GZipTest
             {
                 threadAction();
             }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine(e.Message);
-                threadAction();
-            }
             catch (Exception e)
             {
-                lock (sync)
+                lock (mutex)
                 {
                     Console.WriteLine($"В потоке \"{Thread.CurrentThread.Name}\" возникло исключение:");
                     Console.WriteLine(e.Message);

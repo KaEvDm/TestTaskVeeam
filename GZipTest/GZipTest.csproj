@@ -42,26 +42,25 @@
   <ItemGroup>
     <Compile Include="Application\Application.cs" />
     <Compile Include="Modeles\Block.cs" />
-    <Compile Include="Handlers\HandlersFactory\GZipHandlerFactory.cs" />
-    <Compile Include="Handlers\HandlersFactory\HandlersFactory.cs" />
-    <Compile Include="Application\ProgressBar.cs" />
+    <Compile Include="Handlers\HandlersFactory\FileArchiversFactory.cs" />
+    <Compile Include="Handlers\Interfaces\HandlersFactory.cs" />
     <Compile Include="Modeles\SortedQueueBlocks.cs" />
-    <Compile Include="Handlers\FileHandlers\FileHandler.cs" />
+    <Compile Include="Handlers\FileArchiver.cs" />
     <Compile Include="Utilites\GZipTools.cs" />
-    <Compile Include="Handlers\FileHandlers\Compressor.cs" />
-    <Compile Include="Handlers\FileHandlers\Decompressor.cs" />
-    <Compile Include="Handlers\FileHandlers\FileReader.cs" />
-    <Compile Include="Handlers\FileHandlers\FileWriter.cs" />
-    <Compile Include="Handlers\IHandler.cs" />
-    <Compile Include="Handlers\IProcessor.cs" />
-    <Compile Include="Handlers\IReader.cs" />
+    <Compile Include="Handlers\Processors\Compressor.cs" />
+    <Compile Include="Handlers\Processors\Decompressor.cs" />
+    <Compile Include="Handlers\Readers\FileReader.cs" />
+    <Compile Include="Handlers\Writers\FileWriter.cs" />
+    <Compile Include="Handlers\Interfaces\IHandler.cs" />
+    <Compile Include="Handlers\Interfaces\IProcessor.cs" />
+    <Compile Include="Handlers\Interfaces\IReader.cs" />
     <Compile Include="Application\MultiThreading.cs" />
     <Compile Include="Application\Parameters.cs" />
     <Compile Include="Application\ProcessMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilites\StreamExtension.cs" />
-    <Compile Include="Handlers\IWriter.cs" />
+    <Compile Include="Handlers\Interfaces\IWriter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
 
 namespace GZipTest
 {
@@ -11,7 +7,7 @@ namespace GZipTest
     {
         public int TotalBlockProcessed { get; private set; } = 0;
 
-        bool IProcessor.Process(Block block, out Block processedBlock)
+        bool IProcessor.TryProcess(Block block, out Block processedBlock)
         {
             using (var decompressedDataStream = new MemoryStream())
             using (var compressedDataStream = new MemoryStream(block.Data))
