@@ -3,7 +3,7 @@ using System.IO.Compression;
 
 namespace GZipTest
 {
-    public class Compressor : IProcessor
+    public class GZipCompressor : IProcessor
     {
         public int TotalBlockProcessed { get; private set; } = 0;
 

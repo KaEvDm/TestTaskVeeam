@@ -2,7 +2,7 @@
 
 namespace GZipTest
 {
-    public class FileArchiver : IHandler
+    public class Handler : IDisposable
     {
         private SortedQueueBlocks queueForProcessing;
         private SortedQueueBlocks queueForWriting;
@@ -11,7 +11,7 @@ namespace GZipTest
         private readonly IProcessor processor;
         private readonly IWriter writer;
 
-        public FileArchiver(IReader reader, IProcessor processor, IWriter writer)
+        public Handler(IReader reader, IProcessor processor, IWriter writer)
         {
             queueForProcessing = new SortedQueueBlocks();
             queueForWriting = new SortedQueueBlocks();
@@ -21,7 +21,7 @@ namespace GZipTest
             this.writer = writer;
         }
 
-        void IHandler.Reading()
+        public void Reading()
         {
             while (reader.TryRead(out Block block))
             {
@@ -30,7 +30,7 @@ namespace GZipTest
             queueForProcessing.Stop();
         }
 
-        void IHandler.Processing()
+        public void Processing()
         {
             while (queueForProcessing.CanDequeue || reader.TotalBlockRead != processor.TotalBlockProcessed)
             {
@@ -47,7 +47,7 @@ namespace GZipTest
             queueForWriting.Stop();
         }
 
-        void IHandler.Writing()
+        public void Writing()
         {
             while (queueForWriting.CanDequeue || processor.TotalBlockProcessed != writer.TotalBlockWrite)
             {
@@ -63,6 +63,8 @@ namespace GZipTest
             {
                 throw new Exception("Не все считанные блоки были записанны в итоговый файл!");
             }
+
+            Dispose();
         }
 
         public void Dispose()

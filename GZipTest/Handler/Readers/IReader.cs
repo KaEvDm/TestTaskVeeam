@@ -4,7 +4,7 @@ namespace GZipTest
 {
     public interface IReader : IDisposable
     {
-        bool TryRead(out Block block);
         int TotalBlockRead { get; }
+        bool TryRead(out Block block);
     }
 }

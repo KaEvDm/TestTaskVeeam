@@ -6,14 +6,9 @@ namespace GZipTest
 {
     public class Parameters
     {
-        public const int Megabyte = 1024 * 1024;
         public readonly ProcessMode Mode;
-        public readonly bool IsNeedMultithreading;
         public readonly string PathToSourceFile;
         public readonly string PathToResultFile;
-        public readonly long SourceFileSize;
-        public readonly int ProcessorCount;
-        public readonly IHandler Handler;
 
         public Parameters(string[] args)
         {
@@ -22,23 +17,9 @@ namespace GZipTest
             Mode = (ProcessMode)Enum.Parse(typeof(ProcessMode), args[0]);
             PathToSourceFile = args[1];
             PathToResultFile = args[2];
-
-            SourceFileSize = new FileInfo(PathToSourceFile).Length;
-            ProcessorCount = Environment.ProcessorCount;
-
-            if (ProcessorCount == 1 || SourceFileSize < 2 * ProcessorCount * Megabyte)
-            {
-                IsNeedMultithreading = false;
-            }
-            else
-            {
-                IsNeedMultithreading = true;
-            }
-
-            Handler = HandlerSelection();
         }
 
-        private static void Validation(string[] args)
+        private void Validation(string[] args)
         {
             if (args.Count() != 3)
             {
@@ -59,8 +40,7 @@ namespace GZipTest
             }
         }
 
-
-        private static void ModeCheckDialog(string mode)
+        private void ModeCheckDialog(string mode)
         {
             mode = mode.ToLower();
 
@@ -73,14 +53,14 @@ namespace GZipTest
             }
         }
 
-        private static void PathCheck(string path)
+        private void PathCheck(string path)
         {
             var a = Path.GetInvalidPathChars();
             if (path.IndexOfAny(Path.GetInvalidPathChars()) != -1)
                 throw new ArgumentException($"{path} - некорректный путь к файлу!");
         }
 
-        private static void RewriteFileDialog(string path)
+        private void RewriteFileDialog(string path)
         {
             Console.WriteLine($"{path} - файл существует!");
             Console.WriteLine("Перезаписать?(введите: да/нет)");
@@ -95,26 +75,6 @@ namespace GZipTest
 
             if (answer == "нет")
                 throw new ArgumentException($"{path} - неверный файл.");
-        }
-
-        public IHandler HandlerSelection()
-        {
-            var factory = new ArchiverFactory();
-            switch (Mode)
-            {
-                case ProcessMode.compress:
-                {
-                    return factory.CreateHandler();
-                }
-                case ProcessMode.decompress:
-                {
-                    return factory.CreateDehandler();
-                }
-                default:
-                {
-                    throw new Exception("Неверный режим работы!");
-                }
-            }
         }
     }
 }

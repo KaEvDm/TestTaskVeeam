@@ -41,26 +41,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Application.cs" />
+    <Compile Include="Application\TypeInfo.cs" />
+    <Compile Include="Handler\HandlerCreator.cs" />
+    <Compile Include="Handler\Processors\ProcessorCreator.cs" />
+    <Compile Include="Handler\Readers\ReaderCreator.cs" />
+    <Compile Include="Handler\Writers\WriterCreator.cs" />
     <Compile Include="Modeles\Block.cs" />
-    <Compile Include="Handlers\HandlersFactory\FileArchiversFactory.cs" />
-    <Compile Include="Handlers\Interfaces\HandlersFactory.cs" />
+    <Compile Include="Handler\IHandlerCreator.cs" />
     <Compile Include="Modeles\SortedQueueBlocks.cs" />
-    <Compile Include="Handlers\FileArchiver.cs" />
+    <Compile Include="Handler\Handler.cs" />
+    <Compile Include="Utilites\Constants.cs" />
     <Compile Include="Utilites\GZipTools.cs" />
-    <Compile Include="Handlers\Processors\Compressor.cs" />
-    <Compile Include="Handlers\Processors\Decompressor.cs" />
-    <Compile Include="Handlers\Readers\FileReader.cs" />
-    <Compile Include="Handlers\Writers\FileWriter.cs" />
-    <Compile Include="Handlers\Interfaces\IHandler.cs" />
-    <Compile Include="Handlers\Interfaces\IProcessor.cs" />
-    <Compile Include="Handlers\Interfaces\IReader.cs" />
+    <Compile Include="Handler\Processors\GZipCompressor.cs" />
+    <Compile Include="Handler\Processors\GZipDecompressor.cs" />
+    <Compile Include="Handler\Readers\FileReader.cs" />
+    <Compile Include="Handler\Writers\FileWriter.cs" />
+    <Compile Include="Handler\Processors\IProcessor.cs" />
+    <Compile Include="Handler\Readers\IReader.cs" />
     <Compile Include="Application\MultiThreading.cs" />
     <Compile Include="Application\Parameters.cs" />
     <Compile Include="Application\ProcessMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilites\StreamExtension.cs" />
-    <Compile Include="Handlers\Interfaces\IWriter.cs" />
+    <Compile Include="Handler\Writers\IWriter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -47,7 +47,7 @@ namespace GZipTest
             }
             else
             {
-                return (int)Math.Min(Parameters.Megabyte, stream.Length - stream.Position);
+                return (int)Math.Min(Constants.Megabyte, stream.Length - stream.Position);
             }
         }
     }

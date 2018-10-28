@@ -8,14 +8,8 @@ namespace GZipTest
     {
         private List<Thread> threads = new List<Thread>();
         private readonly object mutex = new object();
-        private IHandler handler;
 
-        public MultiThreading(IHandler handler)
-        {
-            this.handler = handler;
-        }
-
-        public void Run(int threadCount)
+        public void Run(int threadCount, Handler handler)
         {
             var threadRead = CreateThread(handler.Reading, "Read");
             threadRead.Start();
@@ -41,18 +35,17 @@ namespace GZipTest
             {
                 t.Join();
             }
-            handler.Dispose();
         }
 
-        Thread CreateThread(Action threadAction, string name)
+        private Thread CreateThread(Action threadAction, string name)
         {
-            return new Thread(() => TryRun(threadAction))
+            return new Thread(() => TryRunAction(threadAction))
             {
                 Name = name
             };
         }
 
-        void TryRun(Action threadAction)
+        private void TryRunAction(Action threadAction)
         {
             try
             {
