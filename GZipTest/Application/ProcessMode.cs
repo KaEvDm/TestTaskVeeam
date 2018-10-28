@@ -3,8 +3,6 @@
     public enum ProcessMode
     {
         compress,
-        decompress,
-        DeflateCompress,
-        DeflateDecompress
+        decompress
     }
 }

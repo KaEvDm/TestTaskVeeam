@@ -3,6 +3,6 @@
     public interface IProcessor
     {
         int TotalBlockProcessed { get; }
-        bool TryProcess(Block block, out Block processedBlock);
+        Block Process(Block block);
     }
 }

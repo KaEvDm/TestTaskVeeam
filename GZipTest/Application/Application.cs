@@ -5,14 +5,11 @@ namespace GZipTest
 {
     public class Application
     {
-        public Parameters Parameters { get; }
         public Handler Handler;
         public bool UseMultithreading;
 
         public Application(Parameters parameters)
         {
-            Parameters = parameters;
-
             var sourceFileSize = new FileInfo(parameters.PathToSourceFile).Length;
             if (Environment.ProcessorCount == 1 || sourceFileSize < 2 * Environment.ProcessorCount * Constants.Megabyte)
             {
@@ -23,8 +20,7 @@ namespace GZipTest
                 UseMultithreading = true;
             }
 
-            IHandlerCreator handlerCreator = new HandlerCreator(parameters.PathToSourceFile, parameters.PathToResultFile);
-            Handler = handlerCreator.CreateHandler(parameters.Mode, TypeInfo.File, TypeInfo.File);
+            Handler = new Handler(parameters);
         }
 
         public void Run()

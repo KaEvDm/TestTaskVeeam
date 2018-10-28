@@ -14,21 +14,13 @@ namespace GZipTest
             {
                 case ProcessMode.compress:
                 {
-                    processor = new GZipCompressor();
+                    processor = new Compressor();
                     break;
                 }
                 case ProcessMode.decompress:
                 {
-                    processor = new GZipDecompressor();
+                    processor = new Decompressor();
                     break;
-                }
-                case ProcessMode.DeflateCompress:
-                {
-                    throw new NotImplementedException();
-                }
-                case ProcessMode.DeflateDecompress:
-                {
-                    throw new NotImplementedException();
                 }
                 default:
                 {

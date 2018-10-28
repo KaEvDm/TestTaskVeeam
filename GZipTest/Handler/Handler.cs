@@ -11,14 +11,14 @@ namespace GZipTest
         private readonly IProcessor processor;
         private readonly IWriter writer;
 
-        public Handler(IReader reader, IProcessor processor, IWriter writer)
+        public Handler(Parameters parameters)
         {
             queueForProcessing = new SortedQueueBlocks();
             queueForWriting = new SortedQueueBlocks();
 
-            this.reader = reader;
-            this.processor = processor;
-            this.writer = writer;
+            reader = new FileReader(parameters.PathToSourceFile);
+            processor = new ProcessorCreator().CreateProcessor(parameters.Mode);
+            writer = new FileWriter(parameters.PathToResultFile);
         }
 
         public void Reading()
@@ -38,10 +38,8 @@ namespace GZipTest
 
                 if (!(block is null))
                 {
-                    if (processor.TryProcess(block, out Block processedBlock))
-                    {
-                        queueForWriting.Enqueue(processedBlock);
-                    }
+                    var processedBlock = processor.Process(block);
+                    queueForWriting.Enqueue(processedBlock);
                 }
             }
             queueForWriting.Stop();
@@ -55,7 +53,7 @@ namespace GZipTest
 
                 if (!(processedBlock is null))
                 {
-                    writer.TryWrite(processedBlock);
+                    writer.Write(processedBlock);
                 }
             }
 

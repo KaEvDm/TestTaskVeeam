@@ -13,11 +13,10 @@ namespace GZipTest
             TotalBlockWrite = 0;
         }
 
-        bool IWriter.TryWrite(Block processedBlock)
+        void IWriter.Write(Block processedBlock)
         {
             resultStream.Write(processedBlock.Data, 0, processedBlock.Size);
             TotalBlockWrite++;
-            return true;
         }
 
         public void Dispose()

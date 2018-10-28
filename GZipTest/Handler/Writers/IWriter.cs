@@ -5,6 +5,6 @@ namespace GZipTest
     public interface IWriter : IDisposable
     {
         int TotalBlockWrite { get; }
-        bool TryWrite(Block processedBlock);
+        void Write(Block processedBlock);
     }
 }

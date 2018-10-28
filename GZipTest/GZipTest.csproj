@@ -41,19 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Application.cs" />
-    <Compile Include="Application\TypeInfo.cs" />
-    <Compile Include="Handler\HandlerCreator.cs" />
     <Compile Include="Handler\Processors\ProcessorCreator.cs" />
-    <Compile Include="Handler\Readers\ReaderCreator.cs" />
-    <Compile Include="Handler\Writers\WriterCreator.cs" />
     <Compile Include="Modeles\Block.cs" />
-    <Compile Include="Handler\IHandlerCreator.cs" />
     <Compile Include="Modeles\SortedQueueBlocks.cs" />
     <Compile Include="Handler\Handler.cs" />
     <Compile Include="Utilites\Constants.cs" />
     <Compile Include="Utilites\GZipTools.cs" />
-    <Compile Include="Handler\Processors\GZipCompressor.cs" />
-    <Compile Include="Handler\Processors\GZipDecompressor.cs" />
+    <Compile Include="Handler\Processors\Compressor.cs" />
+    <Compile Include="Handler\Processors\Decompressor.cs" />
     <Compile Include="Handler\Readers\FileReader.cs" />
     <Compile Include="Handler\Writers\FileWriter.cs" />
     <Compile Include="Handler\Processors\IProcessor.cs" />

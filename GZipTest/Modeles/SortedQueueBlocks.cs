@@ -11,11 +11,11 @@ namespace GZipTest
         private Queue<Block> blocks = new Queue<Block>();
         private int currentBlockNumber = 0;
 
+        public int Capacity { get; set; }
         public int Count { get => blocks.Count; }
         public bool IsEmpty { get => Count == 0; }
         public bool CanEnqueue { get => !IsDead; }
         public bool CanDequeue { get => CanEnqueue || !IsEmpty; }
-        public int Capacity { get; set; }
 
         public SortedQueueBlocks(int capacity = 20)
         {
