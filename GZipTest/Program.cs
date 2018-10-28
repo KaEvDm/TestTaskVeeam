@@ -9,8 +9,6 @@ namespace GZipTest
             AppDomain.CurrentDomain.UnhandledException += ExceptionHandler;
             Console.CancelKeyPress += CancelKeyHandler;
             new Application(new Parameters(args)).Run();
-
-            Console.ReadKey();
         }
 
         private static void ExceptionHandler(object sender, UnhandledExceptionEventArgs args)

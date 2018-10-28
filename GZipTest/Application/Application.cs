@@ -11,6 +11,11 @@ namespace GZipTest
         public Application(Parameters parameters)
         {
             var sourceFileSize = new FileInfo(parameters.PathToSourceFile).Length;
+            if(sourceFileSize == 0)
+            {
+                throw new Exception("Исходный файл пуст!");
+            }
+
             if (Environment.ProcessorCount == 1 || sourceFileSize < 2 * Environment.ProcessorCount * Constants.Megabyte)
             {
                 UseMultithreading = false;

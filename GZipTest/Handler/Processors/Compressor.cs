@@ -19,6 +19,7 @@ namespace GZipTest
 
                 processedBlock = new Block(GZipTools.AddSizeInfo(compressedDataStream.ToArray()), block.Number);
             }
+            TotalBlockProcessed++;
             return processedBlock;
         }
     }

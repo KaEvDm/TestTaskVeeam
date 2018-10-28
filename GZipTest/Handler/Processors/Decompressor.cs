@@ -17,6 +17,7 @@ namespace GZipTest
                 GZipStream.CopyTo(decompressedDataStream);
                 processedBlock = new Block(decompressedDataStream.ToArray(), block.Number);
             }
+            TotalBlockProcessed++;
             return processedBlock;
         }
     }
